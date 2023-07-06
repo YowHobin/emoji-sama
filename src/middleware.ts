@@ -9,3 +9,4 @@ export default withClerkMiddleware ((req: NextRequest) =>{
 export const config = {
   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 };
+
