@@ -1,4 +1,4 @@
-import { withClerkMiddleware } from "@clerk/nextjs/server";
+/*import { withClerkMiddleware } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import type { NextRequest } from 'next/server'
 
@@ -9,4 +9,12 @@ export default withClerkMiddleware ((req: NextRequest) =>{
 export const config = {
   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 };
+*/
 
+import { authMiddleware } from "@clerk/nextjs";
+
+export default authMiddleware();
+
+export const config = {
+  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
+};

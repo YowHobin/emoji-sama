@@ -1,10 +1,7 @@
 import Head from "next/head";
-import Link from "next/link";
 
 import {
   SignInButton,
-  SignOutButton,
-  UserButton,
   useUser,
 } from "@clerk/nextjs";
 
