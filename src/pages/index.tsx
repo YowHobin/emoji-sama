@@ -2,6 +2,7 @@ import Head from "next/head";
 
 import {
   SignInButton,
+  UserButton,
   useUser,
 } from "@clerk/nextjs";
 
@@ -19,8 +20,9 @@ dayjs.extend(relativeTime);
 
 
 import Image from "next/image";
-import { LoadingPage } from "~/components/loading";
+import { LoadingPage, LoadingSpinner } from "~/components/loading";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 
 
@@ -36,6 +38,14 @@ const CreatePostWizard = () => {
     onSuccess: () => {
       setInput("");
       void ctx.posts.getAll.invalidate();
+    },
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.content;
+      if (errorMessage && errorMessage[0]) {
+        toast.error(errorMessage[0]);
+      } else {
+        toast.error("Failed to post! Please try again later.");
+      }
     },
   });
 
@@ -54,14 +64,28 @@ const CreatePostWizard = () => {
       />
       <input
         placeholder="Type some emojis!"
-        className="grow bg-transparent outline-none"
+        className="grow bg-transparent outline-none h-16 text-lg"
         type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            if (input !== "") {
+              mutate({ content: input });
+            }
+          }
+        }}
         disabled={isPosting}
       />
-
-      <button onClick={() => mutate({ content: input})}>Post</button>
+      {input !== "" && !isPosting && (
+        <button onClick={() => mutate({ content: input })}>Post</button>
+      )}
+      {isPosting && (
+        <div className="flex items-center justify-center h-16">
+          <LoadingSpinner size={25} />
+        </div>
+      )}
     </div>
   );
 };
@@ -81,12 +105,12 @@ const PostView = (props:  PostWithUser ) => {
       />
       <div className="flex flex-col">
         <div className="flex gap-1 text-slate-200">
-          <span className="font-semibold">{`@${author.username}`}</span>
+          <span className="font-semibold ">{`@${author.username}`}</span>
           <span className="font-thin">{` ◦ ${dayjs(
             post.createdAt
           ).fromNow()}`}</span>
         </div>
-        <span className="text-xl">{post.content}</span>
+        <span className="text-2xl">{post.content}</span>
       </div>
     </div>
   );
