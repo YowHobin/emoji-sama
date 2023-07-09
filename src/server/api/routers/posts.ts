@@ -6,12 +6,17 @@ import { z } from "zod";
 import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/api/trpc";
 
 const filterUserForClient = (user: User) => {
-  return{
-    id: user.id,
-    username: user.username,
-    profileImageUrl: user.profileImageUrl,
+     
+
+    const filteredUser = {
+      id: user.id,
+      username: user.username || "Unknown User",
+      profileImageUrl: user.profileImageUrl,
+    };
+
+    return filteredUser;
   };
-};
+
 
 import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
 import { Redis } from "@upstash/redis";
@@ -37,16 +42,19 @@ export const postsRouter = createTRPCRouter({
     });
 
     const users = (await clerkClient.users.getUserList({
+      
       userId: posts.map((post) => post.authorID),
       limit: 100,
     })).map(filterUserForClient);
 
-    console.log(users);
+    console.log("Users:", users);
+
 
     return posts.map((post) => {
       const author = users.find((user) => user.id === post.authorID);
 
-      if(!author)
+
+      if(!author || !author.username )
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Author for post not found",
