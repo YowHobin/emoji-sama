@@ -9,6 +9,7 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["jsonProtocol"]
 }
 
 
@@ -17,7 +18,7 @@ model Post{
     createdAt DateTime @default(now())
 
     content String @db.VarChar(255)
-    authorID String
+    authorId String
 
-    @@index ([authorID])
+    @@index ([authorId])
 }
