@@ -6,6 +6,9 @@ This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3
 
 This application lets the user sign in, sign out, and view the posts and profiles of other users. I used the Clerk for authentication and login method, and PlanetScale for prisma database.  
 
+## Demo
+You can access the live demo of the application at [https://emoji-sama-4boqmcy5h-yowhobin.vercel.app/](https://emoji-sama-4boqmcy5h-yowhobin.vercel.app/)
+
 ## Tech stack used in creating this app.
 
 - [Next.js](https://nextjs.org)
@@ -14,6 +17,5 @@ This application lets the user sign in, sign out, and view the posts and profile
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
 
-## How do I deploy this?
 
-I deployed it using Vercel.
+
